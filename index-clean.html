@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rentit | Professional Marketplace</title>
+    <!-- Bootstrap 5 & Google Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap"
+        rel="stylesheet">
+    <!-- GSAP for Professional Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="profile-enhanced.css">
+    <link rel="stylesheet" href="card-stack.css">
+</head>
+
+<body>
+
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+        <div class="logo-text" id="logo">RENTIT.</div>
+    </div>
+
+    <!-- Main Site Wrapper -->
+    <div id="main-content">
+        <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="#">RENTIT.</a>
+
+                <!-- Mobile Toggle Button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Collapsible Navbar Content -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="navbar-nav me-auto">
+                        <a class="nav-link reveal-nav home-button" href="#home" onclick="goToHome(this, event)">
+                            <span class="nav-icon home-icon">🏠</span>
+                            <span class="nav-text">Home</span>
+                        </a>
+                        <a class="nav-link reveal-nav" href="#search" onclick="showSection('search', this, event)">
+                            <span class="nav-icon">🏷️</span>
+                            <span class="nav-text">Browse Categories</span>
+                        </a>
+                        <a class="nav-link reveal-nav" href="#search" onclick="showSection('search', this, event)">
+                            <span class="nav-icon">🔍</span>
+                            <span class="nav-text">Discover Nearby</span>
+                        </a>
+                    </div>
+                    <div class="auth-buttons d-flex gap-2" id="authButtons">
+                        <button class="btn btn-outline-light rounded-pill px-3" onclick="showAuthModal('login')">
+                            <span class="auth-icon">🔐</span>
+                            Login
+                        </button>
+                        <button class="btn btn-primary rounded-pill px-3" onclick="showAuthModal('signup')">
+                            <span class="auth-icon">✨</span>
+                            Sign Up
+                        </button>
+                    </div>
+
+                    <!-- Profile Dropdown (Hidden by default) -->
+                    <div class="profile-section d-none" id="profileSection">
+                        <div class="profile-dropdown">
+                            <button class="profile-btn" onclick="toggleProfileDropdown()">
+                                <span class="profile-icon">👤</span>
+                                <span class="profile-name" id="profileName">User</span>
+                                <span class="dropdown-arrow">▼</span>
+                            </button>
+
+                            <div class="profile-menu" id="profileMenu">
+                                <div class="profile-header">
+                                    <div class="profile-avatar">👤</div>
+                                    <div class="profile-info">
+                                        <h6 class="profile-display-name" id="profileDisplayName">User Name</h6>
+                                        <small class="profile-email" id="profileEmail">user@email.com</small>
+                                        <span class="profile-badge" id="profileBadge">Customer</span>
+                                    </div>
+                                </div>
+
+                                <div class="profile-menu-items">
+                                    <a href="#" class="profile-menu-item" onclick="showOrders()">
+                                        <span class="menu-icon">📦</span>
+                                        <span class="menu-text">My Orders</span>
+                                        <span class="menu-arrow">→</span>
+                                    </a>
+                                    <a href="#" class="profile-menu-item" onclick="showWishlist()">
+                                        <span class="menu-icon">❤️</span>
+                                        <span class="menu-text">Wishlist</span>
+                                        <span class="menu-arrow">→</span>
+                                    </a>
+                                    <a href="#" class="profile-menu-item" onclick="showSettings()">
+                                        <span class="menu-icon">⚙️</span>
+                                        <span class="menu-text">Settings</span>
+                                        <span class="menu-arrow">→</span>
+                                    </a>
+                                    <div class="menu-divider"></div>
+                                    <a href="#" class="profile-menu-item logout-item" onclick="logout()">
+                                        <span class="menu-icon">🚪</span>
+                                        <span class="menu-text">Logout</span>
+                                        <span class="menu-arrow">→</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <section class="hero container content-slide-up">
+            <h1 id="hero-title">Rent anything,<br><span class="text-primary">Anywhere.</span></h1>
+            <p class="lead text-secondary opacity-75 max-w-2xl">The premium hyper-local marketplace for the sharing
+                economy.</p>
+
+            <!-- Simple Card Stack Carousel -->
+            <div class="card-stack-section">
+                <div class="card-stack-container">
+                    <div class="card-stack" id="cardStack">
+                        <!-- Fashion Card -->
+                        <div class="category-card active" data-category="fashion"
+                            onclick="toggleCardDetails(this, 'fashion')">
+                            <div class="card-image">
+                                <img src="/Users/dhruvilkhunt/Don't Open/Project/sem_3/Fashion/Fashion_template.jpeg"
+                                    alt="Fashion">
+                            </div>
+                            <div class="card-content">
+                                <h3>Fashion</h3>
+                                <p>Wedding, Events & More</p>
+                            </div>
+
+                            <!-- Hidden Details -->
+                            <div class="card-details" id="fashionDetails">
+                                <div class="details-grid">
+                                    <div class="detail-item">
+                                        <img src="/Users/dhruvilkhunt/Don't Open/Project/sem_3/Fashion/Wedding_Wear_template.jpeg"
+                                            alt="Wedding Wear">
+                                        <h5>Wedding Wear</h5>
+                                        <p>₹500/day</p>
+                                        <button class="rent-btn"
+                                            onclick="handleRentClick('Wedding Wear', 500, this)">Rent Now</button>
+                                    </div>
+                                    <div class="detail-item">
+                                        <img src="/Users/dhruvilkhunt/Don't Open/Project/sem_3/Fashion/Shoot_&_Event_templtate.jpeg"
+                                            alt="Shoot & Event">
+                                        <h5>Shoot & Event</h5>
+                                        <p>₹300/day</p>
+                                        <button class="rent-btn"
+                                            onclick="handleRentClick('Shoot & Event', 300, this)">Rent Now</button>
+                                    </div>
+                                    <div class="detail-item">
+                                        <img src="/Users/dhruvilkhunt/Don't Open/Project/sem_3/Fashion/Accessories_template.jpeg"
+                                            alt="Accessories">
+                                        <h5>Accessories</h5>
+                                        <p>₹150/day</p>
+                                        <button class="rent-btn"
+                                            onclick="handleRentClick('Accessories', 150, this)">Rent Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gadgets Card -->
+                        <div class="category-card" data-category="gadgets" onclick="toggleCardDetails(this, 'gadgets')">
+                            <div class="card-image">
+                                <img src="/Users/dhruvilkhunt/Don't Open/Project/sem_3/Gadgets/Gadgets_template.jpeg"
+                                    alt="Gadgets">
+                            </div>
+                            <div class="card-content">
+                                <h3>Gadgets</h3>
+                                <p>Latest Tech & Electronics</p>
+                            </div>
+
+                            <!-- Hidden Details -->
+                            <div class="card-details" id="gadgetsDetails">
+                                <div class="details-grid">
+                                    <div class="detail-item">
+                                        <div class="detail-placeholder smartphone-bg">
+                                            <span class="detail-icon">📱</span>
+                                        </div>
+                                        <h5>Smartphones</h5>
+                                        <p>₹200/day</p>
+                                        <button class="rent-btn"
+                                            onclick="handleRentClick('Smartphones', 200, this)">Rent Now</button>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-placeholder camera-bg">
+                                            <span class="detail-icon">📷</span>
+                                        </div>
+                                        <h5>Cameras</h5>
+                                        <p>₹400/day</p>
+                                        <button class="rent-btn" onclick="handleRentClick('Cameras', 400, this)">Rent
+                                            Now</button>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-placeholder laptop-bg">
+                                            <span class="detail-icon">💻</span>
+                                        </div>
+                                        <h5>Laptops</h5>
+                                        <p>₹350/day</p>
+                                        <button class="rent-btn" onclick="handleRentClick('Laptops', 350, this)">Rent
+                                            Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Appliances Card -->
+                        <div class="category-card" data-category="appliances"
+                            onclick="toggleCardDetails(this, 'appliances')">
+                            <div class="card-image">
+                                <img src="/Users/dhruvilkhunt/Don't Open/Project/sem_3/Appliances/Appliances_template.png"
+                                    alt="Appliances">
+                            </div>
+                            <div class="card-content">
+                                <h3>Appliances</h3>
+                                <p>Home & Kitchen Essentials</p>
+                            </div>
+
+                            <!-- Hidden Details -->
+                            <div class="card-details" id="appliancesDetails">
+                                <div class="details-grid">
+                                    <div class="detail-item">
+                                        <div class="detail-placeholder fridge-bg">
+                                            <span class="detail-icon">❄️</span>
+                                        </div>
+                                        <h5>Refrigerator</h5>
+                                        <p>₹800/day</p>
+                                        <button class="rent-btn"
+                                            onclick="handleRentClick('Refrigerator', 800, this)">Rent Now</button>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-placeholder washing-bg">
+                                            <span class="detail-icon">🌀</span>
+                                        </div>
+                                        <h5>Washing Machine</h5>
+                                        <p>₹600/day</p>
+                                        <button class="rent-btn"
+                                            onclick="handleRentClick('Washing Machine', 600, this)">Rent Now</button>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-placeholder microwave-bg">
+                                            <span class="detail-icon">🔥</span>
+                                        </div>
+                                        <h5>Microwave</h5>
+                                        <p>₹250/day</p>
+                                        <button class="rent-btn" onclick="handleRentClick('Microwave', 250, this)">Rent
+                                            Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Adventure Card -->
+                        <div class="category-card" data-category="adventure"
+                            onclick="toggleCardDetails(this, 'adventure')">
+                            <div class="card-image">
+                                <img src="/Users/dhruvilkhunt/Don't Open/Project/sem_3/Adventure/Adventure_template.jpeg"
+                                    alt="Adventure">
+                            </div>
+                            <div class="card-content">
+                                <h3>Adventure</h3>
+                                <p>Outdoor & Sports Gear</p>
+                            </div>
+
+                            <!-- Hidden Details -->
+                            <div class="card-details" id="adventureDetails">
+                                <div class="details-grid">
+                                    <div class="detail-item">
+                                        <div class="detail-placeholder camping-bg">
+                                            <span class="detail-icon">🏕️</span>
+                                        </div>
+                                        <h5>Camping Gear</h5>
+                                        <p>₹300/day</p>
+                                        <button class="rent-btn"
+                                            onclick="handleRentClick('Camping Gear', 300, this)">Rent Now</button>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-placeholder bicycle-bg">
+                                            <span class="detail-icon">🚴</span>
+                                        </div>
+                                        <h5>Bicycles</h5>
+                                        <p>₹150/day</p>
+                                        <button class="rent-btn" onclick="handleRentClick('Bicycles', 150, this)">Rent
+                                            Now</button>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-placeholder sports-bg">
+                                            <span class="detail-icon">🎿</span>
+                                        </div>
+                                        <h5>Sports Equipment</h5>
+                                        <p>₹200/day</p>
+                                        <button class="rent-btn"
+                                            onclick="handleRentClick('Sports Equipment', 200, this)">Rent Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Arrows -->
+                    <button class="stack-nav prev" onclick="prevCard()">‹</button>
+                    <button class="stack-nav next" onclick="nextCard()">›</button>
+                </div>
+
+                <!-- Card Indicators -->
+                <div class="stack-indicators">
+                    <span class="stack-dot active" onclick="goToCard(0)"></span>
+                    <span class="stack-dot" onclick="goToCard(1)"></span>
+                    <span class="stack-dot" onclick="goToCard(2)"></span>
+                    <span class="stack-dot" onclick="goToCard(3)"></span>
+                </div>
+            </div>
+        </section>
+
+        <footer class="py-5 text-center text-secondary border-top border-secondary opacity-50 content-slide-up">
+            <p>&copy; 2026 Rentit. Localized. Simplified.</p>
+        </footer>
+    </div>
+
+    <!-- Bottom Slide Line Animation -->
+    <div id="bottomSlider" class="bottom-slider">
+        <div class="slider-line"></div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+    <script src="card-stack.js"></script>
+</body>
+
+</html>
