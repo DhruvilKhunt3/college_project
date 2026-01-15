@@ -434,6 +434,31 @@ function showSignupSection() {
 
     // Initialize user type toggle
     initializeUserTypeToggle();
+
+    // Focus on password field after a short delay to ensure it's ready
+    setTimeout(() => {
+        const passwordField = document.getElementById('signupPassword');
+        if (passwordField) {
+            // Remove any readonly attribute that might be blocking input
+            passwordField.removeAttribute('readonly');
+            passwordField.removeAttribute('disabled');
+
+            // Ensure input type is correct
+            if (passwordField.type !== 'password' && passwordField.type !== 'text') {
+                passwordField.type = 'password';
+            }
+
+            // Force clear and reset the field
+            passwordField.value = '';
+            passwordField.setAttribute('inputmode', 'text');
+
+            // Try to focus it
+            passwordField.focus();
+
+            console.log('Password field initialized:', passwordField);
+            console.log('Can type numbers? Try typing in console: passwordField.value = "test123"');
+        }
+    }, 100);
 }
 
 // Switch between Login and Signup with animations
@@ -468,6 +493,16 @@ function switchToSignup() {
 
             // Initialize user type toggle
             initializeUserTypeToggle();
+
+            // Initialize password field
+            setTimeout(() => {
+                const passwordField = document.getElementById('signupPassword');
+                if (passwordField) {
+                    passwordField.removeAttribute('readonly');
+                    passwordField.removeAttribute('disabled');
+                    console.log('Password field ready after switch');
+                }
+            }, 100);
         }
     });
 }
@@ -632,9 +667,18 @@ function togglePassword(fieldId) {
 
 // Enhanced Password Strength Indicator
 function updatePasswordStrength(password) {
-    const strengthIndicator = document.querySelector('.password-strength-indicator');
-    const strengthFill = document.querySelector('.strength-fill');
-    const strengthText = document.querySelector('.strength-text');
+    console.log('updatePasswordStrength called with:', password);
+
+    // Find strength indicator in the signup section specifically
+    const signupSection = document.getElementById('signupSection');
+    if (!signupSection) {
+        console.log('Signup section not found');
+        return;
+    }
+
+    const strengthIndicator = signupSection.querySelector('.password-strength-indicator');
+    const strengthFill = signupSection.querySelector('.strength-fill');
+    const strengthText = signupSection.querySelector('.strength-text');
 
     if (!strengthIndicator || !strengthFill || !strengthText) {
         console.log('Password strength elements not found');
@@ -657,6 +701,8 @@ function updatePasswordStrength(password) {
     if (hasSpecial) strength++;
     if (hasUpperCase) strength++;
 
+    console.log('Strength:', strength, 'Level will be:', strength <= 2 ? 'Weak' : strength <= 3 ? 'Medium' : 'Strong');
+
     // Remove existing classes
     strengthIndicator.classList.remove('strength-weak', 'strength-medium', 'strength-strong');
 
@@ -678,14 +724,17 @@ function updatePasswordStrength(password) {
     strengthText.style.color = strengthColor;
 
     // Animate strength bar
+    const widthPercent = (strength / 5) * 100;
+    console.log('Setting width to:', widthPercent + '%');
+
     if (typeof gsap !== 'undefined') {
         gsap.to(strengthFill, {
-            width: `${(strength / 5) * 100}%`,
+            width: `${widthPercent}%`,
             duration: 0.3,
             ease: "power2.out"
         });
     } else {
-        strengthFill.style.width = `${(strength / 5) * 100}%`;
+        strengthFill.style.width = `${widthPercent}%`;
     }
 }
 
@@ -1073,17 +1122,22 @@ function setupFormValidation() {
     if (signupPassword) {
         signupPassword.addEventListener('input', () => {
             const password = signupPassword.value;
+            console.log('Password changed:', password, 'Length:', password.length); // Debug
+
             if (password) {
                 updatePasswordStrength(password);
             } else {
                 // Clear strength indicator when password is empty
-                const strengthIndicator = document.querySelector('.password-strength-indicator');
-                if (strengthIndicator) {
-                    strengthIndicator.classList.remove('strength-weak', 'strength-medium', 'strength-strong');
-                    const strengthFill = document.querySelector('.strength-fill');
-                    const strengthText = document.querySelector('.strength-text');
-                    if (strengthFill) strengthFill.style.width = '0%';
-                    if (strengthText) strengthText.textContent = '';
+                const modal = document.getElementById('loginModal');
+                if (modal) {
+                    const strengthIndicator = modal.querySelector('.password-strength-indicator');
+                    if (strengthIndicator) {
+                        strengthIndicator.classList.remove('strength-weak', 'strength-medium', 'strength-strong');
+                        const strengthFill = modal.querySelector('.strength-fill');
+                        const strengthText = modal.querySelector('.strength-text');
+                        if (strengthFill) strengthFill.style.width = '0%';
+                        if (strengthText) strengthText.textContent = '';
+                    }
                 }
             }
         });
